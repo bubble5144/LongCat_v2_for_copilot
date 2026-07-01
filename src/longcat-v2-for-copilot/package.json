@@ -1,0 +1,239 @@
+{
+  "name": "longcat-v2-for-copilot",
+  "displayName": "LongCat v2 for Copilot Chat",
+  "description": "在 Copilot Chat 模型选择器中使用美团 LongCat 2.0——保留 Copilot 全部能力（Agent 模式、工具调用、Skills、Instructions、MCP），零配置、自带 API Key、无需额外进程。 | Pick LongCat 2.0 from the Copilot Chat model picker — keep every Copilot capability running on Meituan's LongCat 2.0. Zero config, BYOK, no extra process.",
+  "icon": "resources/icon.png",
+  "version": "0.1.0",
+  "publisher": "sumfish",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bubble5144/LongCat_v2_for_copilot"
+  },
+  "engines": {
+    "vscode": "^1.116.0",
+    "node": ">=24"
+  },
+  "extensionKind": ["workspace"],
+  "categories": [
+    "AI",
+    "Chat",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "longcat",
+    "longcat v2",
+    "longcat-2.0",
+    "copilot",
+    "github copilot",
+    "copilot chat",
+    "byok",
+    "language model",
+    "thinking",
+    "reasoning",
+    "ai",
+    "chat",
+    "meituan"
+  ],
+  "galleryBanner": {
+    "color": "#29E154",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onUri",
+    "onStartupFinished"
+  ],
+  "enabledApiProposals": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languageModelChatProviders": [
+      {
+        "vendor": "longcat",
+        "displayName": "LongCat"
+      }
+    ],
+    "commands": [
+      {
+        "command": "longcat-copilot.setApiKey",
+        "title": "%longcat-copilot.command.setApiKey%"
+      },
+      {
+        "command": "longcat-copilot.getApiKey",
+        "title": "%longcat-copilot.command.getApiKey%"
+      },
+      {
+        "command": "longcat-copilot.clearApiKey",
+        "title": "%longcat-copilot.command.clearApiKey%"
+      },
+      {
+        "command": "longcat-copilot.setVisionModel",
+        "title": "%longcat-copilot.command.setVisionModel%"
+      },
+      {
+        "command": "longcat-copilot.openSettings",
+        "title": "%longcat-copilot.command.openSettings%"
+      },
+      {
+        "command": "longcat-copilot.showLogs",
+        "title": "%longcat-copilot.command.showLogs%"
+      },
+      {
+        "command": "longcat-copilot.openUsage",
+        "title": "%longcat-copilot.command.openUsage%"
+      },
+      {
+        "command": "longcat-copilot.setManualBalance",
+        "title": "%longcat-copilot.command.setManualBalance%"
+      },
+      {
+        "command": "longcat-copilot.clearManualBalance",
+        "title": "%longcat-copilot.command.clearManualBalance%"
+      }
+    ],
+    "walkthroughs": [
+      {
+        "id": "longcatGettingStarted",
+        "title": "%longcat-copilot.walkthrough.title%",
+        "description": "%longcat-copilot.walkthrough.description%",
+        "steps": [
+          {
+            "id": "setApiKey",
+            "title": "%longcat-copilot.walkthrough.setApiKey.title%",
+            "description": "%longcat-copilot.walkthrough.setApiKey.description%",
+            "media": {
+              "markdown": "resources/walkthrough/set-api-key.md"
+            },
+            "completionEvents": [
+              "onCommand:longcat-copilot.setApiKey"
+            ]
+          },
+          {
+            "id": "showModels",
+            "title": "%longcat-copilot.walkthrough.showModels.title%",
+            "description": "%longcat-copilot.walkthrough.showModels.description%",
+            "media": {
+              "markdown": "resources/walkthrough/show-models.md"
+            }
+          },
+          {
+            "id": "advancedSettings",
+            "title": "%longcat-copilot.walkthrough.advancedSettings.title%",
+            "description": "%longcat-copilot.walkthrough.advancedSettings.description%",
+            "media": {
+              "markdown": "resources/walkthrough/advanced-settings.md"
+            }
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "%longcat-copilot.config.title%",
+      "properties": {
+        "longcat-copilot.baseUrl": {
+          "type": "string",
+          "default": "https://api.longcat.chat",
+          "label": "Base URL — API 端点",
+          "markdownDescription": "LongCat API 端点。默认值为官方 LongCat API Platform（https://api.longcat.chat）。仅在使用自托管或代理部署时修改。\n\n🔑 **API Key：** 保存在系统密钥链中。\n\n[设置 API Key](command:longcat-copilot.setApiKey) · [清除 API Key](command:longcat-copilot.clearApiKey) · [获取 API Key](command:longcat-copilot.getApiKey)"
+        },
+        "longcat-copilot.maxTokens": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "label": "Max Tokens — 最大输出",
+          "description": "最大输出 token 数。0 表示不限制（使用 API 默认值 128K）。用于成本控制。"
+        },
+        "longcat-copilot.pricing.inputUncached": {
+          "type": "number",
+          "minimum": 0,
+          "default": 2,
+          "label": "Pricing: 输入未缓存（¥/百万）",
+          "description": "未命中缓存的输入 token 单价。默认 ¥2。"
+        },
+        "longcat-copilot.pricing.inputCached": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0.04,
+          "label": "Pricing: 输入缓存命中（¥/百万）",
+          "description": "命中缓存的输入 token 单价。默认 ¥0.04。"
+        },
+        "longcat-copilot.pricing.output": {
+          "type": "number",
+          "minimum": 0,
+          "default": 8,
+          "label": "Pricing: 输出（¥/百万）",
+          "description": "输出 token 单价。默认 ¥8。"
+        },
+        "longcat-copilot.experimental.stabilizeToolList": {
+          "type": "boolean",
+          "default": false,
+          "label": "Stabilize Tool List — 稳定工具列表",
+          "markdownDescription": "实验性功能。预激活工具以使 tools 参数在轮次间更稳定，提高上下文缓存命中率。仅在启用 64–128 个工具时推荐。",
+          "tags": ["experimental"]
+        },
+        "longcat-copilot.modelIdOverrides": {
+          "type": "object",
+          "default": {
+            "longcat-2.0": "LongCat-2.0"
+          },
+          "label": "Model ID Overrides — 模型 ID 覆盖",
+          "description": "覆盖发送给 API 的模型 ID。用于兼容第三方代理。",
+          "additionalProperties": false,
+          "properties": {
+            "longcat-2.0": {
+              "type": "string",
+              "description": "LongCat-2.0 的模型 ID 覆盖。"
+            }
+          }
+        },
+        "longcat-copilot.visionProxy": {
+          "type": "object",
+          "default": {},
+          "label": "Vision Proxy — 视觉代理",
+          "markdownDescription": "用于视觉代理的模型。LongCat 不支持原生图片输入，图片将由该模型转换为文字描述后发送给 LongCat。\n\n[选择视觉代理模型](command:longcat-copilot.setVisionModel)"
+        },
+        "longcat-copilot.visionPrompt": {
+          "type": "string",
+          "editPresentation": "multilineText",
+          "default": "Describe all image attachments in this message.\n\nIf there is one image, describe it directly.\nIf there are multiple images:\n1. Describe each image separately, preserving their order.\n2. Then provide a combined description explaining the overall context and relationships across the images.\n\nReturn one concise factual description suitable for inserting into a text-only chat prompt. Include visible text, objects, UI elements, people, and relevant context. Do not invent details.",
+          "label": "Vision Prompt — 视觉提示词",
+          "markdownDescription": "视觉代理描述图片时使用的自定义提示模板。"
+        },
+        "longcat-copilot.debugMode": {
+          "type": "string",
+          "default": "minimal",
+          "label": "Debug Mode — 调试模式",
+          "enum": ["minimal", "metadata", "verbose"],
+          "enumItemLabels": [
+            "%longcat-copilot.config.debugMode.minimal.label%",
+            "%longcat-copilot.config.debugMode.metadata.label%",
+            "%longcat-copilot.config.debugMode.verbose.label%"
+          ],
+          "markdownEnumDescriptions": [
+            "%longcat-copilot.config.debugMode.minimal.description%",
+            "%longcat-copilot.config.debugMode.metadata.description%",
+            "%longcat-copilot.config.debugMode.verbose.description%"
+          ],
+          "markdownDescription": "诊断模式。Minimal：仅记录 token 用量。Metadata：记录隐私友好的诊断信息。Verbose：完整请求转储（可能包含敏感内容）。"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('out', { recursive: true, force: true, maxRetries: process.platform === 'win32' ? 10 : 0 })\"",
+    "compile": "npm run clean && tsc -p ./",
+    "watch": "npm run clean && tsc -watch -p ./",
+    "lint": "oxlint",
+    "format": "oxfmt --write src/",
+    "format:check": "oxfmt --check src/",
+    "package": "vsce package -o dist/"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/vscode": "^1.116.0",
+    "@vscode/vsce": "^3.9.1",
+    "ovsx": "0.10.12",
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0",
+    "typescript": "^6.0.3"
+  }
+}
