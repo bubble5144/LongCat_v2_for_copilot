@@ -3,7 +3,7 @@
   "displayName": "LongCat v2 for Copilot Chat",
   "description": "在 Copilot Chat 模型选择器中使用美团 LongCat 2.0——保留 Copilot 全部能力（Agent 模式、工具调用、Skills、Instructions、MCP），零配置、自带 API Key、无需额外进程。 | Pick LongCat 2.0 from the Copilot Chat model picker — keep every Copilot capability running on Meituan's LongCat 2.0. Zero config, BYOK, no extra process.",
   "icon": "resources/icon.png",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "sumfish",
   "license": "MIT",
   "repository": {

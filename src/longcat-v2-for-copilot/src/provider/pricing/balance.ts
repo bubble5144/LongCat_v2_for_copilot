@@ -151,19 +151,22 @@ export async function syncBalanceCache(
 }
 
 /**
- * Calculate remaining balance = manual - session consumption.
+ * Calculate remaining balance = manual - billable consumption.
+ * Cached tokens are NOT deducted (token plan typically doesn't count cache hits).
  */
 export function calculateRemainingBalance(
   context: vscode.ExtensionContext,
-  localUsage: { totalTokens: number },
+  localUsage: { totalTokens: number; uncachedPromptTokens?: number; completionTokens?: number },
 ): { hasManualBalance: boolean; remaining?: number; manualTotal?: number } {
   const manual = getManualBalance(context);
   if (manual === undefined) {
     return { hasManualBalance: false };
   }
+  // Billable tokens = uncached prompt + completion (cache hits excluded)
+  const billable = (localUsage.uncachedPromptTokens ?? 0) + (localUsage.completionTokens ?? localUsage.totalTokens);
   return {
     hasManualBalance: true,
-    remaining: Math.max(manual - localUsage.totalTokens, 0),
+    remaining: Math.max(manual - billable, 0),
     manualTotal: manual,
   };
 }
@@ -173,7 +176,7 @@ export function calculateRemainingBalance(
  */
 export function formatBalanceForStatusBar(
   context: vscode.ExtensionContext,
-  localUsage: { totalTokens: number },
+  localUsage: { totalTokens: number; uncachedPromptTokens?: number; completionTokens?: number },
 ): string {
   const { hasManualBalance, remaining } = calculateRemainingBalance(context, localUsage);
 

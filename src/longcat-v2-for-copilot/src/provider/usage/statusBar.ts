@@ -39,7 +39,8 @@ export function createStatusBar(context: vscode.ExtensionContext): StatusBarMana
   function updateUsage(usage: AccumulatedUsage): void {
     lastUsage = usage;
     render(usage);
-    void syncBalanceCache(context, usage.totalTokens);
+    const billable = (usage.uncachedPromptTokens ?? 0) + (usage.completionTokens ?? 0);
+    void syncBalanceCache(context, billable);
   }
 
   function refresh(): void {
